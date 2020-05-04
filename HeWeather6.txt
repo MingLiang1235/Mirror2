@@ -1,0 +1,37 @@
+forcast:
+{'HeWeather6': 
+	[
+		{
+				'basic': {'cid': 'CN101010100', 'location': '北京', 'parent_city': '北京', 'admin_area': '北京', 'cnty': '中国', 'lat': '39.90498734', 'lon': '116.4052887', 'tz': '+8.00'},
+		 		'update': {'loc': '2020-04-22 13:56', 'utc': '2020-04-22 05:56'},
+		  		'status': 'ok', 
+		  		'daily_forecast': 
+		  			[
+		  				{'cond_code_d': '100', 'cond_code_n': '100', 'cond_txt_d': '晴', 'cond_txt_n': '晴', 'date': '2020-04-22', 'hum': '13', 'mr': '05:20', 'ms': '18:08', 'pcpn': '0.0', 'pop': '0', 'pres': '1017', 'sr': '05:24', 'ss': '19:01', 'tmp_max': '16', 'tmp_min': '6', 'uv_index': '12', 'vis': '25', 'wind_deg': '355', 'wind_dir': '北风', 'wind_sc': '4-5', 'wind_spd': '30'},
+		  				{'cond_code_d': '100', 'cond_code_n': '100', 'cond_txt_d': '晴', 'cond_txt_n': '晴', 'date': '2020-04-23', 'hum': '13', 'mr': '05:45', 'ms': '19:07', 'pcpn': '0.0', 'pop': '0', 'pres': '1006', 'sr': '05:23', 'ss': '19:02', 'tmp_max': '19', 'tmp_min': '7', 'uv_index': '12', 'vis': '25', 'wind_deg': '325', 'wind_dir': '西北风', 'wind_sc': '3-4', 'wind_spd': '21'}, 
+		  				{'cond_code_d': '100', 'cond_code_n': '100', 'cond_txt_d': '晴', 'cond_txt_n': '晴', 'date': '2020-04-24', 'hum': '18', 'mr': '06:11', 'ms': '20:07', 'pcpn': '0.0', 'pop': '0', 'pres': '1009', 'sr': '05:21', 'ss': '19:03', 'tmp_max': '26', 'tmp_min': '12', 'uv_index': '12', 'vis': '25', 'wind_deg': '272', 'wind_dir': '西风', 'wind_sc': '3-4', 'wind_spd': '17'}
+		  			]
+		  }
+	]
+}
+now:
+{'HeWeather6': 
+	[
+		{	'basic': {'cid': 'CN101010100', 'location': '北京', 'parent_city': '北京', 'admin_area': '北京', 'cnty': '中国', 'lat': '39.90498734', 'lon': '116.4052887', 'tz': '+8.00'}, 
+			'update': {'loc': '2020-04-22 14:09', 'utc': '2020-04-22 06:09'}, 
+			'status': 'ok', 
+			'now': {'cloud': '0', 'cond_code': '100', 'cond_txt': '晴', 'fl': '10', 'hum': '9', 'pcpn': '0.0', 'pres': '1016', 'tmp': '15', 'vis': '16', 'wind_deg': '301', 'wind_dir': '西北风', 'wind_sc': '3', 'wind_spd': '16'}
+		}
+	]
+}
+return:
+{
+	'city': '北京', 
+	'date': '2020-04-22', 
+	'three_day': 
+		[
+			{'cond_txt_d': '晴', 'date': '2020-04-23', 'tmp_max': '19', 'tmp_min': '7', 'wind_dir': '西北风', 'wind_sc': '3-4级'}, 
+			{'cond_txt_d': '晴', 'date': '2020-04-24', 'tmp_max': '26', 'tmp_min': '12', 'wind_dir': '西风', 'wind_sc': '3-4级'}
+		], 
+	'now': {'tmp': '15', 'tmp_min': '6', 'tmp_max': '16', 'wind_dir': '西北风', 'wind_sc': '3级'}
+}
