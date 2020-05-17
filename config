@@ -1,1 +1,11 @@
-fullscreen:True
+{
+	"fullscreen":"True",
+	"weather_now":"https://free-api.heweather.net/s6/weather/now?location=CN101011700&key=f376edb228bd4ae489fc065fb3f88d1c",
+	"weather_forecast":"https://free-api.heweather.net/s6/weather/forecast?location=CN101011700&key=f376edb228bd4ae489fc065fb3f88d1c",
+	"PaoMaDeng":[
+	"https://free-api.heweather.net/s6/weather/now?location=CN101310201&key=f376edb228bd4ae489fc065fb3f88d1c", 
+	"https://free-api.heweather.net/s6/weather/now?location=CN101091106&key=f376edb228bd4ae489fc065fb3f88d1c", 
+	"https://free-api.heweather.net/s6/weather/now?location=CN101070201&key=f376edb228bd4ae489fc065fb3f88d1c", 
+	"https://free-api.heweather.net/s6/weather/now?location=CN101120201&key=f376edb228bd4ae489fc065fb3f88d1c", 
+	"https://free-api.heweather.net/s6/weather/now?location=CN101020100&key=f376edb228bd4ae489fc065fb3f88d1c" ] 
+}

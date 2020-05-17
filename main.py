@@ -7,19 +7,22 @@
 #
 # WARNING! All changes made in this file will be lost!
 ######################################################################
-#   FileName:  main.py   ver.0.5
+#   FileName:  main.py   ver.0.5 rev.0.2 of linux
 #   Perporse:  Draw frame of prog,get data from multiple source
 #   Author:  Jishan                  
 #   Email:  unicoder@sohu.com
 #   Date:  2020-04-21
 ######################################################################
 import sys
+import time
+import json
 import threading
 import pigpio
 from clock import getTime
 from money import getMoney
-from weather import getWeather
+from weather import getWeather, runWeather2Server
 from schema import PaintArea
+from paoMaDeng import PaoMaArea
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -28,7 +31,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(480, 320)
         MainWindow.setMinimumSize(QtCore.QSize(480, 320))
-        MainWindow.setStyleSheet("background-color: rgb(0, 63, 125); ")  # 天蓝色
+        MainWindow.setStyleSheet("background-color: rgb(50, 160, 242); ")  # 天蓝色(0,63,125) 灰色(100,100,100) 蓝色(50,160,242)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label_datetime = QtWidgets.QLabel(self.centralwidget)
@@ -202,7 +205,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.widget_2 = PaintArea(self)  # 使用self作为PaintArea的父窗口初始化self.widget_2
         self.widget_2.setGeometry(QtCore.QRect(260, 160, 211, 111))
         self.widget_2.setObjectName("widget_2")
-        #self.widget_2.move(260,160)  # 绝对定位
+        #self.widget = QtWidgets.QWidget(self.centralwidget)
+        self.widget = PaoMaArea(self)
+        self.widget.setGeometry(QtCore.QRect(0, 290, 471, 21))
+        self.widget.setObjectName("widget")
         self.label_9.raise_()
         self.label_datetime.raise_()
         self.widget_1.raise_()
@@ -216,14 +222,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.money_2.raise_()
         self.money_3.raise_()
         self.widget_2.raise_()
+        self.widget.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 480, 23))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -254,9 +258,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         self.label_datetime.setAlignment(QtCore.Qt.AlignCenter)
         
-        self.dict_config = self.getConfig()
+        self.full_screen_config = self.getFromJsonConfig('fullscreen')
         #print('self.dict_config:',self.dict_config)
-        if self.dict_config['fullscreen'] == 'True':
+        if self.full_screen_config == 'True':
             #print('Before fullScreen , in dict==True')
             self.showFullScreen()
             self.fullScreenFlag = 1
@@ -274,10 +278,21 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.cb = pi.callback(pin, pigpio.FALLING_EDGE, self.cbf)    
         #self.init_gpio()
         #self.drawSchema = drawSchema(self.widget_2)
-    
+        runWeather2Server()
+        time.sleep(2)
+        self.update_weather2()
+	#--------------------------------------------------
+    # 跑马灯显示各个城市天气
+    #--------------------------------------------------
+    def update_weather2(self):
+        #self.widget.show()
+        self.widget.update()  # 重绘widget_2
+        timer3 = threading.Timer(0.2, self.update_weather2)  # 每0.2秒重绘一次向左跑马灯
+        timer3.start()
     def cbf(self, gpio, level, tick):
         print(gpio, level, tick)
-        if (tick - self.prev_tick)> 500000:
+        delay = tick - self.prev_tick
+        if delay > 500000 or delay<0:  # all over again
             #print('self.fullScreenFlag:', \
 			#	self.fullScreenFlag)
             self.prev_tick = tick
@@ -295,13 +310,32 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     #    timer5 = threading.Timer(5, self.init_gpio)
      #   timer5.start()
 
-    def getConfig(self):
-        dict_config = {}
-        for line in open(r'./config'):
-            #print(line)
-            key,value = (line.strip()).split(':')
-            dict_config[key] = value
-        return dict_config
+    # def getConfig(self):
+    #     dict_config = {}
+    #     for line in open(r'./config'):
+    #         #print(line)
+    #         key,value = (line.strip()).split(':')
+    #         dict_config[key] = value
+    #     return dict_config
+    #--------------------------------------------------
+    # 获取config（json文件）中的某一配置项。
+    #--------------------------------------------------
+    def getFromJsonConfig(self, key):
+        load_dict = None
+        try:
+            with open('./config', 'r') as load_f:
+                load_dict = json.load(load_f)
+                #print(load_dict)
+        except Exception as err:
+            print('!!!!!',repr(err))
+        if load_dict:
+            try:
+                return load_dict[key]
+            except Exception as err:
+                print('?????',repr(err))
+                return None
+        else:
+            return None
 
     def update_second(self):
         _translate = QtCore.QCoreApplication.translate
