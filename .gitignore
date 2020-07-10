@@ -1,2 +1,2 @@
-# 以'#'开头的行，均视为注释。
+#  this is comment line
 *.pyc

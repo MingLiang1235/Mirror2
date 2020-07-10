@@ -40,7 +40,7 @@ class PaoMaArea(QFrame):
 	def paintEvent(self, event):  
 		#print('In PaoMaArea paintEvent.')
 		self.round_times += 1
-		if self.round_times > 300:  # 每一分钟调用一次，获取最新天气跑马数据。
+		if self.round_times > 3000:  # 每十分钟调用一次，获取最新天气跑马数据。
 			self.text = getWeather2()
 			self.text += ' ' * self.gap
 			print('In PaoMaArea paint:', self.text)

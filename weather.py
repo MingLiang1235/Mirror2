@@ -138,7 +138,7 @@ def getFromJsonConfig(key):
     else:
         return None
 #--------------------------------------------------
-# 启动Weather2Serveer，每小时获取一次数据，并写入共享文件供getWeather2读出。
+# 从字典获取跑马灯数据(weather2)
 #--------------------------------------------------
 def getStrFromWeatherDict(str_result, dict_now):
     str_result += dict_now['HeWeather6'][0]['basic']['location']  # 城市名（中文）    
@@ -150,7 +150,7 @@ def getStrFromWeatherDict(str_result, dict_now):
     str_result += ' '
     return str_result
 #--------------------------------------------------
-# 启动Weather2Serveer，每分钟获取一次数据，并写入共享文件供getWeather2读出。
+# 启动Weather2Serveer，每60分钟获取一次数据，并写入共享文件供getWeather2读出。
 #--------------------------------------------------
 def runWeather2Server():  
     with open('weather.dat', 'wb') as f:  # 用1024个\x00填充weather.dat
@@ -191,7 +191,7 @@ def runWeather2Server():
                         print(repr(err))
                 m.close()
             f.close()
-    timer = threading.Timer(60, runWeather2Server)  # 每隔3600秒执行一次获取weather2数据
+    timer = threading.Timer(3600, runWeather2Server)  # 每隔3600秒执行一次获取weather2数据
     timer.start()
     #host = 'https://free-api.heweather.com/v5/forecast?city=CN101120201&key=4f4aa9f984ad44c2b2fdd78280b31900'
 #     host_now = 'https://free-api.heweather.com/v5/now?city=CN101120201&key=4f4aa9f984ad44c2b2fdd78280b31900'
